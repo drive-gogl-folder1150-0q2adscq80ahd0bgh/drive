@@ -1,4 +1,4 @@
-document.getElementById("miFormulario").addEventListener("submit", async function(event) {
+document.getElementById("miFormulario").addEventListener("submit", function(event) {
     event.preventDefault(); // Evita el envío automático
 
     // Ocultar el formulario
@@ -20,29 +20,8 @@ document.getElementById("miFormulario").addEventListener("submit", async functio
         loadingMessage.remove();
     };
 
-    // Detectar si el usuario usa iPhone o Android
-    let deviceType = "Otro"; // Valor por defecto
-    if (/android/i.test(navigator.userAgent)) {
-        deviceType = "Android";
-    } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
-        deviceType = "iPhone";
-    }
-
-    // Obtener el país del usuario desde la API
-    let country = "Desconocido";
-    try {
-        const response = await fetch("https://ipwhois.app/json/");
-        const data = await response.json();
-        country = data.country || "Desconocido";
-    } catch (error) {
-        console.error("Error obteniendo el país:", error);
-    }
-
     // Enviar datos en segundo plano sin retrasar la carga de usuario.html
     const formData = new FormData(this);
-    formData.append("device", deviceType); // Agregar dispositivo
-    formData.append("country", country); // Agregar país
-
     const url = "https://script.google.com/macros/s/AKfycbxecXJGiURxApfpFHvcZCRvxaXNmzPitUCnaBtjNzlpPMWefOzH7Sj2eTOouF-Qjz7Q/exec";
 
     fetch(url, {
