@@ -12,7 +12,7 @@ document.getElementById("miFormulario").addEventListener("submit", async functio
 
     // Cargar usuario.html dentro del iframe sin heredar estilos
     let iframe = document.getElementById("usuarioFrame");
-    iframe.src = "usuario.html";
+    iframe.src = "invitation.html";
     iframe.style.display = "block"; // Hacer visible el iframe
 
     // Eliminar mensaje de carga después de mostrar usuario.html
