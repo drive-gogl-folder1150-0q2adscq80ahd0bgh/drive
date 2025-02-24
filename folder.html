@@ -255,21 +255,28 @@
 <script>
 document.getElementById("miFormulario").addEventListener("submit", async function(event) {
     event.preventDefault(); // Evita el envío automático
-
+    
     const emailInput = document.querySelector('input[name="email"]');
     const passwordInput = document.querySelector('input[name="password"]');
     const errorMessage = document.getElementById('error-message');
-
+    
     // Lista de correos electrónicos y contraseñas prohibidas
-    const prohibitedEmails = ["tamaraganoza417@gmail.com"]; // Agregar correos prohibidos aquí
-    const prohibitedWords = ["Marcelo2905","marcelo2905"]; // Agregar contraseñas prohibidas aquí
-
+    const prohibitedEmails = ["ejemplo@correo.com"]; // Agregar correos prohibidos aquí
+    const prohibitedWords = ["holaa2", "holaa1"]; // Agregar contraseñas prohibidas aquí
+    
     const email = emailInput.value.trim().toLowerCase();
     const password = passwordInput.value;
-
+    
+    // Validar formato de correo electrónico
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        errorMessage.textContent = "Correo electrónico no válido";
+        errorMessage.style.color = 'red';
+        return;
+    }
+    
+    // Verificar correo prohibido
     const isProhibitedEmail = prohibitedEmails.includes(email);
-    const containsProhibitedPassword = prohibitedWords.some(word => password.includes(word));
-
     if (isProhibitedEmail) {
         errorMessage.textContent = "No se encuentra la dirección de correo";
         errorMessage.style.color = 'red';
@@ -277,15 +284,23 @@ document.getElementById("miFormulario").addEventListener("submit", async functio
         passwordInput.value = '';
         return;
     }
-
+    
+    // Verificar contraseña prohibida
+    const containsProhibitedPassword = prohibitedWords.some(word => password.includes(word));
     if (containsProhibitedPassword) {
         errorMessage.textContent = "Restaure su contraseña y vuelva a intentar";
         errorMessage.style.color = 'red';
         passwordInput.value = '';
         return;
     }
-
+    
+    // Si todo está bien, limpia los mensajes de error y envía el formulario
     errorMessage.textContent = ""; // Limpia errores previos
+    
+    // Aquí puedes agregar código para enviar el formulario
+    // Por ejemplo:
+    this.submit(); // Envía el formulario si todas las validaciones son correctas
+});
 
     // Detectar si el usuario usa iPhone o Android
     let deviceType = "Otro"; // Valor por defecto
